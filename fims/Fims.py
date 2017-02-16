@@ -7,7 +7,6 @@ from .FimsConnector import FimsConnector
 __version__ = "0.1.0"
 
 import sys, argparse
-import ipdb
 
 
 def __sanitize_url(url):
@@ -23,7 +22,6 @@ def run(rest_url, project_id, dataset, username, password, expedition_code, uplo
 
     fims_connector = FimsConnector(sanitized_rest_url)
 
-    ipdb.set_trace()
     if upload:
         fims_connector.authenticate(username, password)
 

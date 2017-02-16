@@ -66,7 +66,7 @@ def __print_messages(messages):
         print("Invalid Project Configuration.\n "
               "Please talk to your project administrator to fix the following error(s):\n\n")
 
-        for group_message, messages_array in messages['config']:
+        for group_message, messages_array in messages['config'].items():
             __print_sheet_messages(group_message, messages_array, "Error")
 
         print("\n")

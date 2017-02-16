@@ -7,6 +7,7 @@ from .FimsConnector import FimsConnector
 __version__ = "0.1.0"
 
 import sys, argparse
+import ipdb
 
 
 def __sanitize_url(url):
@@ -22,6 +23,7 @@ def run(rest_url, project_id, dataset, username, password, expedition_code, uplo
 
     fims_connector = FimsConnector(sanitized_rest_url)
 
+    ipdb.set_trace()
     if upload:
         fims_connector.authenticate(username, password)
 
@@ -71,20 +73,23 @@ def __print_messages(messages):
 
         print("\n")
 
-    for sheet_name, sheet_messages in messages['worksheets'].items():
-        level = "warnings"
-        if 'errors' in sheet_messages:
-            level = "errors"
+    if len(messages['worksheets']) == 0:
+        print("Succussfully Validated!")
+    else:
+        for sheet_name, sheet_messages in messages['worksheets'].items():
+            level = "warnings"
+            if 'errors' in sheet_messages:
+                level = "errors"
 
-        print("Validation results on %s worksheet.\n"
-              "1 or more %s found. Must fix to continue.\n\n" % (sheet_name, level))
+            print("Validation results on %s worksheet.\n"
+                  "1 or more %s found. Must fix to continue.\n\n" % (sheet_name, level))
 
-        for group_message, messages_array in sheet_messages['errors'].items():
-            __print_sheet_messages(group_message, messages_array, "Error")
-        for group_message, messages_array in sheet_messages['warnings'].items():
-            __print_sheet_messages(group_message, messages_array, "Warning")
+            for group_message, messages_array in sheet_messages['errors'].items():
+                __print_sheet_messages(group_message, messages_array, "Error")
+            for group_message, messages_array in sheet_messages['warnings'].items():
+                __print_sheet_messages(group_message, messages_array, "Warning")
 
-        print("\n")
+            print("\n")
 
 
 def __print_sheet_messages(group_message, messages_array, prefix):

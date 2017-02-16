@@ -66,28 +66,29 @@ def __print_messages(messages):
         print("Invalid Project Configuration.\n "
               "Please talk to your project administrator to fix the following error(s):\n\n")
 
-        for group_message, messages_array in messages['config'].items():
+        for group_message, messages_array in messages['config']['errors'].items():
             __print_sheet_messages(group_message, messages_array, "Error")
 
         print("\n")
 
-    if len(messages['worksheets']) == 0:
-        print("Succussfully Validated!")
     else:
-        for sheet_name, sheet_messages in messages['worksheets'].items():
-            level = "warnings"
-            if 'errors' in sheet_messages:
-                level = "errors"
+        if len(messages['worksheets']) == 0:
+            print("Succussfully Validated!")
+        else:
+            for sheet_name, sheet_messages in messages['worksheets'].items():
+                level = "warnings"
+                if 'errors' in sheet_messages:
+                    level = "errors"
 
-            print("Validation results on %s worksheet.\n"
-                  "1 or more %s found. Must fix to continue.\n\n" % (sheet_name, level))
+                print("Validation results on %s worksheet.\n"
+                      "1 or more %s found. Must fix to continue.\n\n" % (sheet_name, level))
 
-            for group_message, messages_array in sheet_messages['errors'].items():
-                __print_sheet_messages(group_message, messages_array, "Error")
-            for group_message, messages_array in sheet_messages['warnings'].items():
-                __print_sheet_messages(group_message, messages_array, "Warning")
+                for group_message, messages_array in sheet_messages['errors'].items():
+                    __print_sheet_messages(group_message, messages_array, "Error")
+                for group_message, messages_array in sheet_messages['warnings'].items():
+                    __print_sheet_messages(group_message, messages_array, "Warning")
 
-            print("\n")
+                print("\n")
 
 
 def __print_sheet_messages(group_message, messages_array, prefix):
